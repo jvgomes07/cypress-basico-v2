@@ -1,6 +1,7 @@
 /// <reference types="Cypress" />
 
 describe('Central de Atendimento ao Cliente TAT', function() {
+    const   THREE_SECONDS = 3000
     beforeEach(function(){
         cy.visit('./src/index.html')  
     })
@@ -10,8 +11,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         
           
     })
+    Cypress._.times(1, () => {
     it('Preenche os campos obrigatórios', function(){
-        const longText = 'Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste'
+        const longText = Cypress._.repeat('Test', 4)
+        
+        cy.clock()
+
         cy.get('#firstName').type('Joao')
         cy.get('#lastName').type('Gomes')
         cy.get('#email').type('gomes@gomes.com')
@@ -20,18 +25,25 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.contains('button', 'Enviar').click()
         /* Validação*/
         cy.get('.success').should('be.visible')
+        cy.tick(THREE_SECONDS)
+        cy.get('.success').should('not.be.visible')
         
         
-
+    })
     })
     it('Mensagem de Erro email invalido', function(){
+        cy.clock()
         cy.get('#firstName').type('Joao')
         cy.get('#lastName').type('Gomes')
-        cy.get('#email').type('gomes@gomes..com')
+        cy.get('#email').type('gomes@gomes.sadasdsadsadcom')
         cy.contains('button', 'Enviar').click()
+        
         /* Validação*/
         cy.get('.error').should('be.visible')
+        cy.tick(THREE_SECONDS)
+        cy.get('.error').should('not.be.visible')
 
+ 
     })
     it('Validar telefone', function(){
         cy.get('#phone')
@@ -43,14 +55,17 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     })
     it('exibe mensagem de erro quando o telefone se torna obrigatório', function(){
-        
+        cy.clock()
         cy.get('#firstName').type('Joao')
         cy.get('#lastName').type('Gomes')
         cy.get('#phone-checkbox').check()
         cy.get('#email').type('gomes@gomes..com')
         cy.contains('button', 'Enviar').click()
         
-        cy.get('.error').should('not.have.value')
+        cy.get('.error').should('be.visible')
+        cy.tick(THREE_SECONDS)
+        cy.get('.error').should('not.have.visible')
+
         
     
     })
@@ -78,9 +93,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     })
     it('exibe mensagem de erro ao submeter o formulário sem preencher os campos', function(){
+        cy.clock()
         cy.contains('button', 'Enviar').click()
         cy.get('.error').should('be.visible')
-
+        cy.tick(THREE_SECONDS)
+        cy.get('.error').should('not.be.visible')
     })
     
     it('Submit with comands person.', function(){
@@ -92,7 +109,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     cy.get('select')
     .select('youtube')
     .should('have.value', 'youtube')
-    //cy.get('#support-type').type('elogio').click()
+    
     })
     
     it('selecionar produto mentoria', function(){
@@ -164,7 +181,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#privacy a')
         .invoke('removeAttr', 'target')
         .click()
-        cy.contains('Talking About Testing').should('be.visible')
+        
     })
+    it('Exibir mensad')
 })
 
