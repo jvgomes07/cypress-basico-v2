@@ -8,7 +8,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
     it.only('Login on Gmail', function() {
 
-    cy.get('.gb_ja').click()
+    cy.get('#APjFqb')
+    .type('CDC BANK{enter}')
+
+    cy.get('.MUFPAc > :nth-child(2) > a').click()
+    cy.get('button', 'Rotas').click()
+
 
         
     
